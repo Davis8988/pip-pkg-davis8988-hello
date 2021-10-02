@@ -20,7 +20,7 @@ with io.open("README.md", "r", encoding="utf-8") as fh:
 
 # Package Version
 print("Setting package version")
-temp_ver = "1.0"
+temp_ver = os.environ.get("LOCAL_BUILD_VERSION", "1.0")
 devStatus = "4 - Beta"  # For build statuses see: https://pypi.python.org/pypi?%3Aaction=list_classifiers
 pkg_version = f"{temp_ver}.dev0"
 if "JENKINS_BUILD_VERSION" in os.environ and "JENKINS_BUILD_BRANCH" in os.environ:
@@ -46,7 +46,8 @@ setuptools.setup(
      long_description_content_type="text/markdown",
      url="https://github.com/Davis8988/pip-pkg-davis8988-hello.git",
 	 python_requires='>=3.6,<4',
-	 packages=setuptools.find_packages(),
+	 packages=setuptools.find_packages(where="src"),
+	 package_dir={"": "src"},
 	 license='MIT',
 	 license_file = 'LICENSE.txt',
 	 install_requires=[
