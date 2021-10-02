@@ -16,7 +16,6 @@ with open("README.md", "r") as fh:
 setuptools.setup(
      name='davis8988-hello',  
      version='1.0.0',
-     scripts=['davis8988-hello'] ,
      author="David Yair",
      author_email="Davismarsel@gmail.com",
      description="Extensions & Libs",

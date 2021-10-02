@@ -3,7 +3,7 @@
 :: This script compiles the python pkg
 
 
-set pkgName=davis8988-hello
+set pkgName=davis8988_hello
 set repoDir=%~dp0..\..
 set setupFile=%repoDir%\setup.py
 
@@ -27,8 +27,11 @@ if %errorlevel% neq 0 echo. && echo Error - Bad exit code from compiling command
 powershell -ExecutionPolicy ByPass -Command "Write-Host 'Success - Finished compiling pkg: %pkgName%' -ForegroundColor Green"
 
 echo Cleaning..
-REM if exist "build\*" echo Removing dir: "%CD%\build" && rmdir /q /s "build"
-REM if exist "build\*" rmdir /q /s "build"  && REM Sometimes needs to run this command twice..
+if exist "build\*" echo Removing dir: "%CD%\build" && rmdir /q /s "build"
+if exist "build\*" rmdir /q /s "build"  && REM Sometimes needs to run this command twice..
+
+if exist "%pkgName%.egg-info\*" echo Removing dir: "%CD%\%pkgName%.egg-info" && rmdir /q /s "%pkgName%.egg-info"
+if exist "%pkgName%.egg-info\*" rmdir /q /s "%pkgName%.egg-info"
 
 echo.
 echo Done.
