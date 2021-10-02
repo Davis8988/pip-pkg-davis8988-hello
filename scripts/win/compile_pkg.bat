@@ -22,9 +22,13 @@ powershell -ExecutionPolicy ByPass -Command "Write-Host 'Compiling..' -Foregroun
 set compileCmnd=python "%setupFile%" bdist_wheel
 echo Executing: %compileCmnd%
 %compileCmnd%
-if %errorlevel% neq 0 echo. && echo Error - Bad exit code && echo Failure during execution of: %compileCmnd% && echo Failed to compile pkg: '%pkgName%' && echo. && echo Aborting.. && pause && exit /b 1
+if %errorlevel% neq 0 echo. && echo Error - Bad exit code from compiling command && echo Failure during execution of: %compileCmnd% && echo Failed to compile pkg: '%pkgName%' && echo. && echo Aborting.. && pause && exit /b 1
 
-powershell -ExecutionPolicy ByPass -Command "Write-Host 'Success' -ForegroundColor Green"
+powershell -ExecutionPolicy ByPass -Command "Write-Host 'Success - Finished compiling pkg: %pkgName%' -ForegroundColor Green"
+
+echo Cleaning..
+REM if exist "build\*" echo Removing dir: "%CD%\build" && rmdir /q /s "build"
+REM if exist "build\*" rmdir /q /s "build"  && REM Sometimes needs to run this command twice..
 
 echo.
 echo Done.
