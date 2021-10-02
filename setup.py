@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import io
@@ -20,12 +22,12 @@ with io.open("README.md", "r", encoding="utf-8") as fh:
 print("Setting package version")
 temp_ver = "1.0"
 devStatus = "4 - Beta"  # For build statuses see: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-pkg_version = f"{temp_ver}.dev"
+pkg_version = f"{temp_ver}.dev0"
 if "JENKINS_BUILD_VERSION" in os.environ and "JENKINS_BUILD_BRANCH" in os.environ:
 	print("This is Jenkins-CI build:")
-    print(f"JENKINS_BUILD_VERSION = {os.environ['JENKINS_BUILD_VERSION']}")
-    print(f"JENKINS_BUILD_BRANCH = {os.environ['JENKINS_BUILD_BRANCH']}")
-    print(f"JENKINS_PKG_DEV_STATUS = {os.environ['JENKINS_PKG_DEV_STATUS']}")
+	print(f"JENKINS_BUILD_VERSION = {os.environ['JENKINS_BUILD_VERSION']}")
+	print(f"JENKINS_BUILD_BRANCH = {os.environ['JENKINS_BUILD_BRANCH']}")
+	print(f"JENKINS_PKG_DEV_STATUS = {os.environ['JENKINS_PKG_DEV_STATUS']}")
 	temp_ver = os.environ.get('JENKINS_BUILD_VERSION', pkg_version)  # For releases should be:  'Development Status :: 5 - Production/Stable'
 	devStatus = os.environ.get('JENKINS_PKG_DEV_STATUS', devStatus)
 
@@ -44,7 +46,7 @@ setuptools.setup(
      long_description_content_type="text/markdown",
      url="https://github.com/Davis8988/pip-pkg-davis8988-hello.git",
 	 python_requires='>=3.6,<4',
-	 packages=setuptools.find_packages('src'),
+	 packages=setuptools.find_packages(where="src", exclude=("tests",)),
 	 license='MIT',
 	 license_file = 'LICENSE.txt',
 	 install_requires=[
