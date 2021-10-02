@@ -46,7 +46,7 @@ setuptools.setup(
      long_description_content_type="text/markdown",
      url="https://github.com/Davis8988/pip-pkg-davis8988-hello.git",
 	 python_requires='>=3.6,<4',
-	 packages=setuptools.find_packages(where="src", exclude=("tests",)),
+	 packages=setuptools.find_packages(),
 	 license='MIT',
 	 license_file = 'LICENSE.txt',
 	 install_requires=[
