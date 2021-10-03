@@ -13,7 +13,7 @@ set pkgName=davis8988_hello
 set repoDir=%~dp0
 set setupFile=setup.py
 set buildVersion=%~1
-if not defined buildVersion set buildVersion=1.1
+if not defined buildVersion set buildVersion=1.5
 echo.
 
 :: COMPILE PKG
@@ -33,7 +33,7 @@ echo.
 	
 	call :COLOR_PRINT "Compiling.." "Yellow"
 	set compileCmnd=python "%setupFile%" bdist_wheel
-	echo Executing: %compileCmnd%
+	echo. && echo Executing: %compileCmnd% && echo.
 	%compileCmnd%
 	if %errorlevel% neq 0 echo. && call :COLOR_PRINT "Error - Bad exit code from compiling command"  "RED" && echo Failure during execution of: %compileCmnd% && echo Failed to compile pkg: '%pkgName%' && echo. && echo Aborting.. && pause && exit /b 1
 
@@ -53,14 +53,14 @@ echo.
 	echo Continuing with installation
 	echo Looking for install pkg wheel file
 	set wheelFile=
-	for /f %%a in ('dir /b dist\*.whl') do (set wheelFile=%%a)
+	for /f %%a in ('dir /b dist\*.whl') do (set wheelFile=%%a)  && REM  Built-in sorting ensures the latest whl file is installed
 	if not defined wheelFile echo. && call :COLOR_PRINT "Error - Failed to define var: wheelFile with name of pkg wheel file at: %CD%\dist\*.whl" "RED" && echo Cannot install pkg: %pkgName% && echo. && echo Aborting.. && pause && exit /b 1
 	echo Found=%CD%\dist\!wheelFile!
 	CHOICE /C YN /M "Install pacakge from file - Are you sure"
 	if %errorlevel% equ 2 echo Aborting.. && pause && exit 1
 	echo Installing..
 	set installCmnd=python -m pip install --upgrade %CD%\dist\!wheelFile!
-	echo Executing: %installCmnd%
+	echo. && echo Executing: %installCmnd% && echo.
 	%installCmnd%
 	if %errorlevel% neq 0 echo. && call :COLOR_PRINT "Error - Bad exit code from installing command"  "RED" && echo Failure during execution of: %installCmnd% && echo Failed to install pkg: '%pkgName%' from file: %CD%\dist\!wheelFile! && echo. && echo Aborting.. && pause && exit /b 1
 	echo Cleaning..
