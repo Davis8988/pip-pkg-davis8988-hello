@@ -59,7 +59,7 @@ echo.
 	CHOICE /C YN /M "Install pacakge from file - Are you sure"
 	if %errorlevel% equ 2 echo Aborting.. && pause && exit 1
 	echo Installing..
-	set installCmnd=python -m pip install --upgrade %CD%\dist\!wheelFile!
+	set installCmnd=python -m pip install --upgrade --no-deps --force-reinstall %CD%\dist\!wheelFile!
 	echo. && echo Executing: %installCmnd% && echo.
 	%installCmnd%
 	if %errorlevel% neq 0 echo. && call :COLOR_PRINT "Error - Bad exit code from installing command"  "RED" && echo Failure during execution of: %installCmnd% && echo Failed to install pkg: '%pkgName%' from file: %CD%\dist\!wheelFile! && echo. && echo Aborting.. && pause && exit /b 1
