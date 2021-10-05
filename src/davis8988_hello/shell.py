@@ -8,7 +8,7 @@ def execute(**kwargs):
     command_timeout = kwargs.get("command_timeout")  
     if command_str is None:
         print("Error - Missing mandatory param for function execute() : 'command_str' ")
-        return None
+        return result_dict
     
     result = subprocess.run("dir /b", shell=True)
     print("Result:", result)    
