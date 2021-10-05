@@ -3,6 +3,7 @@
 import subprocess
 
 def execute(**kwargs):
+    cmndStr = kwargs.get("command_str")  # Returns None if key not found
     pass
 
 result = subprocess.run("dir /b", shell=True)
