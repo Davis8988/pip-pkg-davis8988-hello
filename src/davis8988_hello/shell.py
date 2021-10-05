@@ -1,6 +1,7 @@
 # Executes a command on windows CMD or unix Shell 
 
 import subprocess
+import time
 
 def execute(command_str, **kwargs):
     summary_dict = {"status" : False, "info" : ''}
@@ -13,15 +14,23 @@ def execute(command_str, **kwargs):
     
     # execute_result = subprocess.run(command_str, shell=True)
     print("Executing:", command_str)
-    execute_result = subprocess.Popen(command_str, shell=True, stdin=None, stdout=None, stderr=None,)
-    input("Waiting..")
-    stdoutdata, stderrdata = execute_result.communicate()
-    print("stdoutdata=", stdoutdata)
-    print("stderrdata=", stderrdata)
-    print("done")
+    process = subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    time.sleep(0.1)
+    while process.poll() is None:
+        print("Still waiting..")
+        stdout = process.stdout
+        stderr = process.stderr
+        if stdout:
+            print([str(l) for l in stdout.read()])
+        if stderr:
+            print([str(l) for l in stderr.read()])
+        print(stdout)
+        time.sleep(1)
+
+    print("done waiting")
 
     # print("Result:", result)    
 
-execute("ping localhost -n 15")
+execute("ping localhost -n 10")
 
 
