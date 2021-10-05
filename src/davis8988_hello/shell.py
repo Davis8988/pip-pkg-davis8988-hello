@@ -11,7 +11,7 @@ def execute(**kwargs):
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
     
-    execute_result = subprocess.run(command_str, shell=True)
+    # execute_result = subprocess.run(command_str, shell=True)
     print("Result:", result)    
 
 
