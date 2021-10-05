@@ -13,7 +13,7 @@ def execute(command_str, **kwargs):
     
     # execute_result = subprocess.run(command_str, shell=True)
     print("Executing:", command_str)
-    execute_result = subprocess.Popen(command_str)
+    execute_result = subprocess.Popen(command_str, shell=True, stdin=None, stdout=None, stderr=None,)
     input("Waiting..")
     stdoutdata, stderrdata = execute_result.communicate()
     print("stdoutdata=", stdoutdata)
