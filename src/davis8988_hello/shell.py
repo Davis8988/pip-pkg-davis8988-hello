@@ -12,7 +12,14 @@ def execute(**kwargs):
         return summary_dict
     
     # execute_result = subprocess.run(command_str, shell=True)
-    print("Result:", result)    
+    execute_result = subprocess.Popen(command_str)
+    input("Waiting..")
+    stdoutdata, stderrdata = execute_result.communicate()
+    print("stdoutdata=", stdoutdata)
+    print("stderrdata=", stderrdata)
+    print("done")
+
+    # print("Result:", result)    
 
 
 
