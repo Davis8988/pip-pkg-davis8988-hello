@@ -6,6 +6,7 @@ def execute(**kwargs):
     summary_dict = {"status" : False, "info" : ''}
     command_str = kwargs.get("command_str")  # Returns None if key not found
     command_timeout = kwargs.get("command_timeout")  
+    command_cwd = kwargs.get("command_cwd")  
     if command_str is None:
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
