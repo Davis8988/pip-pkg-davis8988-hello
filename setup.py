@@ -51,7 +51,8 @@ setuptools.setup(
 	 license='MIT',
 	 license_file = 'LICENSE.txt',
 	 install_requires=[
-		"pip>=1.1"
+		"pip>=1.1",
+		"colorama>=0.4.3",
 	 ],
      classifiers=[
 		 "Development Status :: {}".format(devStatus),

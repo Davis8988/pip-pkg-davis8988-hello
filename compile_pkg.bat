@@ -50,6 +50,12 @@ echo.
 	call :COLOR_PRINT "=== Installing pkg: %pkgName% ===" "Cyan"
 	echo Validating env..
 	if not exist "dist\*.whl" echo. && call :COLOR_PRINT "Error - Missing or unreachable install pkg wheel file at: %CD%\dist" "RED" && echo Cannot install pkg: %pkgName% && echo. && echo Aborting.. && pause && exit /b 1
+	where venv >nul 2>&1 || echo. && call :COLOR_PRINT "Error - Missing venv.exe from system-path" "RED" && echo Did you install virtualenv ? && call :COLOR_PRINT "You should install virtualenv by executing: pip install virtualenv" "Yellow" && echo and then re-execute this script && echo. && echo Aborting.. && pause && exit /b 1
+	echo Continuing..
+	:: Create Virtual Environment
+	
+	
+	
 	echo Continuing with installation
 	echo Looking for install pkg wheel file
 	set wheelFile=
