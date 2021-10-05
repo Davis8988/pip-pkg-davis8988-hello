@@ -12,6 +12,7 @@ def execute(**kwargs):
         return summary_dict
     
     # execute_result = subprocess.run(command_str, shell=True)
+    print("Executing:", command_str)
     execute_result = subprocess.Popen(command_str)
     input("Waiting..")
     stdoutdata, stderrdata = execute_result.communicate()
@@ -21,6 +22,6 @@ def execute(**kwargs):
 
     # print("Result:", result)    
 
-
+execute("ping localhost -n 15")
 
 
