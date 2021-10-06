@@ -2,7 +2,6 @@
 
 import subprocess
 import time
-import davis8988_hello.printings as printings
 
 def execute(command_str, **kwargs):
     summary_dict                 = {"status" : False, "info" : ''}
@@ -19,7 +18,6 @@ def execute(command_str, **kwargs):
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
     
-    # printing_func = printings.print_msg
     printing_func = print
     if command_hide_output:
         printing_func = skip_printings
