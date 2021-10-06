@@ -8,6 +8,8 @@ def execute(command_str, **kwargs):
     command_str = kwargs.get("command_str", command_str)  
     command_timeout = kwargs.get("command_timeout")  
     command_cwd = kwargs.get("command_cwd")  
+    command_redirect_stdout_to = kwargs.get("command_redirect_stdout_to", subprocess.PIPE)  
+    command_redirect_stderr_to = kwargs.get("command_redirect_stderr_to", subprocess.STDOUT)  
     command_output_decode = kwargs.get("command_output_decode", "utf-8")  
     if command_str is None:
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
@@ -15,7 +17,7 @@ def execute(command_str, **kwargs):
     
     # execute_result = subprocess.run(command_str, shell=True)
     print("Executing:", command_str)
-    processObj = subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    processObj = subprocess.Popen(command_str, shell=True, stdout=command_redirect_stdout_to, stderr=command_redirect_stderr_to)
     time.sleep(0.1)
     while processObj.poll() is None:
         print("Still waiting..")
@@ -26,9 +28,9 @@ def execute(command_str, **kwargs):
                 print(line.decode(command_output_decode).strip() )
         if stderr:
             for line in stderr:
-                print(line.decode(command_output_decode).strip() )
+                print("Stderr:", line.decode(command_output_decode).strip() )
         time.sleep(1)
 
-execute("ping localhost -n 2")
+execute("ping localhost -n 2 && asdj")
 
 
