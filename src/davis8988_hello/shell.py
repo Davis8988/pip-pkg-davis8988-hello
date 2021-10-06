@@ -29,10 +29,6 @@ def execute(command_str, **kwargs):
                 print(line.decode(command_output_decode).strip() )
         time.sleep(1)
 
-    print("done waiting")
-
-    # print("Result:", result)    
-
-execute("ping localhost -n 10 >nul 2>&1")
+execute("ping localhost -n 2")
 
 
