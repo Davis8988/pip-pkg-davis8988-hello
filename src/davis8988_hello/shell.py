@@ -9,7 +9,7 @@ def execute(command_str, **kwargs):
     command_timeout              = kwargs.get("command_timeout")  
     command_cwd                  = kwargs.get("command_cwd")  
     command_redirect_stdout_to   = kwargs.get("command_redirect_stdout_to", subprocess.PIPE)  
-    command_redirect_stderr_to   = subprocess.STDOUT
+    command_redirect_stderr_to   = kwargs.get("command_redirect_stderr_to", subprocess.STDOUT)  
     command_output_decode        = kwargs.get("command_output_decode", "utf-8")  
     command_hide_output          = kwargs.get("command_hide_output", False)  
     command_no_wait              = kwargs.get("command_no_wait", False)  
@@ -30,18 +30,27 @@ def execute(command_str, **kwargs):
     summary_dict['status'] = True
     if command_no_wait:
         return summary_dict
-    proc_out = 
+        
+    proc_out = ''
     while processObj.poll() is None:
         # print("Still waiting..")
         stdout = processObj.stdout
+        stderr = processObj.stderr
         if stdout:
             for line in stdout:
-                proc_out += line
-                printing_func(line.decode(command_output_decode).strip() )
+                line = line.decode(command_output_decode).strip()
+                proc_out += line + "\n"  # Python automatically translates '\n' to the proper newline character for your platform
+                printing_func(line)
+        if stderr:
+            for line in stderr:
+                line = line.decode(command_output_decode).strip()
+                proc_out += line + "\n"
+                printing_func("Stderr:", line)
         time.sleep(1)
     
     summary_dict["exitcode"] = processObj.returncode
     summary_dict["output"] = proc_out
+    print("Output:", proc_out)
 def skip_printings(msg):
     pass
 
