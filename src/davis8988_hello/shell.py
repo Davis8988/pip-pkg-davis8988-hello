@@ -18,9 +18,11 @@ def execute(command_str, **kwargs):
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
     
+    # Assign printing func
     printing_func = print
     if command_hide_output:
         printing_func = skip_printings
+
     print(f"Executing: {command_str}")
     processObj = subprocess.Popen(command_str, shell=True, stdout=command_redirect_stdout_to, stderr=command_redirect_stderr_to)
     time.sleep(0.1)
