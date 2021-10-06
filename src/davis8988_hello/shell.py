@@ -12,6 +12,8 @@ def execute(command_str, **kwargs):
     command_redirect_stderr_to   = kwargs.get("command_redirect_stderr_to", subprocess.STDOUT)  
     command_output_decode        = kwargs.get("command_output_decode", "utf-8")  
     command_hide_output          = kwargs.get("command_hide_output", False)  
+
+    # Check Mandatory params
     if command_str is None:
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
