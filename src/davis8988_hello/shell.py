@@ -15,8 +15,7 @@ def execute(command_str, **kwargs):
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
     
-    # execute_result = subprocess.run(command_str, shell=True)
-    print("Executing:", command_str)
+    print(f"Executing: {command_str}")
     processObj = subprocess.Popen(command_str, shell=True, stdout=command_redirect_stdout_to, stderr=command_redirect_stderr_to)
     time.sleep(0.1)
     while processObj.poll() is None:
