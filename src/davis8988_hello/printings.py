@@ -13,3 +13,6 @@ def coloredprint(msg='', foreground_color=None, **kwargs):
 	else:
 		print(getattr(Fore, foreground_color) + f"{msg}")
 
+
+def print_msg(msg):
+	print(msg)

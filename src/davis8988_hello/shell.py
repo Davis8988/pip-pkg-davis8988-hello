@@ -19,6 +19,10 @@ def execute(command_str, **kwargs):
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
     
+    # printing_func = printings.print_msg
+    printing_func = print
+    if command_hide_output:
+        printing_func = skip_printings
     print(f"Executing: {command_str}")
     processObj = subprocess.Popen(command_str, shell=True, stdout=command_redirect_stdout_to, stderr=command_redirect_stderr_to)
     time.sleep(0.1)
@@ -28,11 +32,14 @@ def execute(command_str, **kwargs):
         stderr = processObj.stderr
         if stdout:
             for line in stdout:
-                print(line.decode(command_output_decode).strip() )
+                printing_func(line.decode(command_output_decode).strip() )
         if stderr:
             for line in stderr:
-                print("Stderr:", line.decode(command_output_decode).strip() )
+                printing_func("Stderr:", line.decode(command_output_decode).strip() )
         time.sleep(1)
+
+def skip_printings(msg):
+    pass
 
 execute("ping localhost -n 2 && asdj")
 
