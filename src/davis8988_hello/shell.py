@@ -27,7 +27,7 @@ def execute(command_str, **kwargs):
     processObj = subprocess.Popen(command_str, shell=True, stdout=command_redirect_stdout_to, stderr=command_redirect_stderr_to)
     time.sleep(0.1)
     while processObj.poll() is None:
-        print("Still waiting..")
+        # print("Still waiting..")
         stdout = processObj.stdout
         stderr = processObj.stderr
         if stdout:
