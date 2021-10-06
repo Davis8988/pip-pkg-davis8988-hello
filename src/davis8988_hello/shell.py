@@ -27,6 +27,7 @@ def execute(command_str, **kwargs):
     print(f"Executing: {command_str}")
     processObj = subprocess.Popen(command_str, shell=True, stdout=command_redirect_stdout_to, stderr=command_redirect_stderr_to)
     time.sleep(0.1)
+    summary_dict['status'] = True
     if command_no_wait:
         return summary_dict
     while processObj.poll() is None:
@@ -44,6 +45,6 @@ def execute(command_str, **kwargs):
 def skip_printings(msg):
     pass
 
-execute("ping localhost -n 2 && asdj", command_no_wait=True)
+execute("ping localhost -n 2 && asdj")
 
 
