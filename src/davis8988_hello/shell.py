@@ -44,6 +44,6 @@ def execute(command_str, **kwargs):
 def skip_printings(msg):
     pass
 
-execute("ping localhost -n 2 && asdj")
+execute("ping localhost -n 2 && asdj", command_no_wait=True)
 
 
