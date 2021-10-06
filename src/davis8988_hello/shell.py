@@ -25,7 +25,11 @@ def execute(command_str, **kwargs):
         printing_func = skip_printings
 
     print(f"Executing: {command_str}")
-    processObj = subprocess.Popen(command_str, shell=True, stdout=command_redirect_stdout_to, stderr=command_redirect_stderr_to)
+    processObj = subprocess.Popen(command_str, 
+                                    shell=True, 
+                                    stdout=command_redirect_stdout_to, 
+                                    stderr=command_redirect_stderr_to,
+                                    cwd=command_cwd )
     time.sleep(0.1)
     summary_dict['status'] = True
     if command_no_wait:
