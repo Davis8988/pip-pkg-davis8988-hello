@@ -4,7 +4,7 @@ import subprocess
 import time
 
 def execute(command_str, **kwargs):
-    summary_dict                 = {"status" : False, "info" : ''}
+    summary_dict                 = {"status" : False, "info" : '', 'exitcode': None, 'output': None}
     command_str                  = kwargs.get("command_str", command_str)  
     command_timeout              = kwargs.get("command_timeout")  
     command_cwd                  = kwargs.get("command_cwd")  
