@@ -8,6 +8,7 @@ def execute(command_str, **kwargs):
     command_str = kwargs.get("command_str", command_str)  
     command_timeout = kwargs.get("command_timeout")  
     command_cwd = kwargs.get("command_cwd")  
+    command_output_decode = kwargs.get("command_output_decode", "utf-8")  
     if command_str is None:
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
@@ -20,18 +21,18 @@ def execute(command_str, **kwargs):
         print("Still waiting..")
         stdout = processObj.stdout
         stderr = processObj.stderr
-        print("well....")
         if stdout:
-            print(stdout.read())
+            for line in stdout:
+                print(line.decode(command_output_decode).strip() )
         if stderr:
-            print(stderr.read())
-        print(stdout)
+            for line in stderr:
+                print(line.decode(command_output_decode).strip() )
         time.sleep(1)
 
     print("done waiting")
 
     # print("Result:", result)    
 
-execute("ping localhost -n 10")
+execute("ping localhost -n 10 >nul 2>&1")
 
 
