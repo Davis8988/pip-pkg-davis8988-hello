@@ -29,7 +29,7 @@ def execute(command_str, **kwargs):
     time.sleep(0.1)
     summary_dict['status'] = True
     if command_no_wait:
-        return summary_dict
+        return summary_dict  # When doesn't want to wait - Finish here
         
     proc_out = ''
     while processObj.poll() is None:
