@@ -12,6 +12,7 @@ def execute(command_str, **kwargs):
     command_redirect_stderr_to   = kwargs.get("command_redirect_stderr_to", subprocess.STDOUT)  
     command_output_decode        = kwargs.get("command_output_decode", "utf-8")  
     command_hide_output          = kwargs.get("command_hide_output", False)  
+    command_no_wait              = kwargs.get("command_no_wait", False)  
 
     # Check Mandatory params
     if command_str is None:
@@ -26,6 +27,8 @@ def execute(command_str, **kwargs):
     print(f"Executing: {command_str}")
     processObj = subprocess.Popen(command_str, shell=True, stdout=command_redirect_stdout_to, stderr=command_redirect_stderr_to)
     time.sleep(0.1)
+    if command_no_wait:
+        return summary_dict
     while processObj.poll() is None:
         # print("Still waiting..")
         stdout = processObj.stdout
