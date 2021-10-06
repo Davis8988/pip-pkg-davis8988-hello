@@ -50,7 +50,7 @@ def execute(command_str, **kwargs):
     
     summary_dict["exitcode"] = processObj.returncode
     summary_dict["output"] = proc_out
-    print("Output:", proc_out)
+    return summary_dict
 def skip_printings(msg):
     pass
 
