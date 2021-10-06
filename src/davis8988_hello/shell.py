@@ -14,16 +14,17 @@ def execute(command_str, **kwargs):
     
     # execute_result = subprocess.run(command_str, shell=True)
     print("Executing:", command_str)
-    process = subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    processObj = subprocess.Popen(command_str, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     time.sleep(0.1)
-    while process.poll() is None:
+    while processObj.poll() is None:
         print("Still waiting..")
-        stdout = process.stdout
-        stderr = process.stderr
+        stdout = processObj.stdout
+        stderr = processObj.stderr
+        print("well....")
         if stdout:
-            print([str(l) for l in stdout.read()])
+            print(stdout.read())
         if stderr:
-            print([str(l) for l in stderr.read()])
+            print(stderr.read())
         print(stdout)
         time.sleep(1)
 
