@@ -4,13 +4,14 @@ import subprocess
 import time
 
 def execute(command_str, **kwargs):
-    summary_dict = {"status" : False, "info" : ''}
-    command_str = kwargs.get("command_str", command_str)  
-    command_timeout = kwargs.get("command_timeout")  
-    command_cwd = kwargs.get("command_cwd")  
-    command_redirect_stdout_to = kwargs.get("command_redirect_stdout_to", subprocess.PIPE)  
-    command_redirect_stderr_to = kwargs.get("command_redirect_stderr_to", subprocess.STDOUT)  
-    command_output_decode = kwargs.get("command_output_decode", "utf-8")  
+    summary_dict                 = {"status" : False, "info" : ''}
+    command_str                  = kwargs.get("command_str", command_str)  
+    command_timeout              = kwargs.get("command_timeout")  
+    command_cwd                  = kwargs.get("command_cwd")  
+    command_redirect_stdout_to   = kwargs.get("command_redirect_stdout_to", subprocess.PIPE)  
+    command_redirect_stderr_to   = kwargs.get("command_redirect_stderr_to", subprocess.STDOUT)  
+    command_output_decode        = kwargs.get("command_output_decode", "utf-8")  
+    command_hide_output          = kwargs.get("command_hide_output", False)  
     if command_str is None:
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
