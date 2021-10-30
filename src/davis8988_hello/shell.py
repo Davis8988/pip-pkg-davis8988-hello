@@ -54,13 +54,13 @@ def execute(command_str, **kwargs):
                                         cwd=command_cwd )
         time.sleep(0.1)
         summary_dict['status'] = True
+
+        # No wait
         if command_no_wait:
             logging.debug("Not waiting for command to finish")
             return summary_dict  # When doesn't want to wait - Finish here
-        
     
-    
-        # Start
+        # Wait for command to finish
         timer = None # Default - No timer
         if command_timeout_sec:
             logging.debug(f"Preparing timer of {command_timeout_sec} seconds and waiting for command to finish")
