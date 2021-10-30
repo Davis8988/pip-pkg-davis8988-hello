@@ -5,20 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "System Python: Current File",
+            "name": "Python: Current File",
             "type": "python",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal"
-        },
-        {
-            "name": "venv Python: Current File",
-            "type": "python",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "python.pythonPath": "venv/Scripts/python.exe",
-            "python.venvPath": "venv"
+            // "python.pythonPath": "C:/Program Files/Python37/Python.exe"
+            // "python.pythonPath": "venv/Scripts/python.exe",
+            // "python.venvPath": "venv"
         }
     ]
 }
