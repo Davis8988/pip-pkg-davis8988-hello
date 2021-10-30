@@ -82,9 +82,14 @@ def execute(command_str, **kwargs):
                     proc_out += line + "\n"
                     printing_func("Stderr:", line)
             time.sleep(1)
+    except BaseException as err_msg:
+        logging.info(f"ERROR: {err_msg}")
+        summary_dict['status'] = False
+        summary_dict['info'] = err_msg
+        return summary_dict
     finally:
         if timer is not None:
-            logging.debug(f"Cancelling started command timer")
+            logging.debug("Cancelling started command timer")
             timer.cancel()
     
     summary_dict["exitcode"] = process_obj.returncode
