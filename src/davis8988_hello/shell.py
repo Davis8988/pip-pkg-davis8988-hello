@@ -10,6 +10,7 @@ def _command_raise_timedout_exception(**kwargs):
     err_msg = kwargs.get("err_msg", default_err_msg) 
     process_obj = kwargs.get("process_obj", None) 
     if process_obj:
+        print(f"Killing proc: {str(process_obj)}")
         process_obj.kill()
     raise TimeoutError(err_msg)
 
@@ -46,7 +47,7 @@ def execute(command_str, **kwargs):
         return summary_dict  # When doesn't want to wait - Finish here
         
     callback_func_args = {'err_msg' : f'Executed command timed out after {command_timeout_sec} seconds', 'process_obj': process_obj}
-    timer = Timer(command_timeout_sec, _command_raise_timedout_exception, callback_func_args)
+    timer = Timer(command_timeout_sec, _command_raise_timedout_exception, [], callback_func_args)
     proc_out = ''
     try:
         timer.start()  # Start the timer, and loop while waiting for command to finish
