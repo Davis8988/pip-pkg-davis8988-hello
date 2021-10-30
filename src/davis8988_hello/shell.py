@@ -40,11 +40,11 @@ def execute(command_str, **kwargs):
         return summary_dict
     
     # Assign printing func
-    printing_func = print
+    printing_func = logging.info
     if command_hide_output:
         printing_func = _command_skip_printings
 
-    print(f"Executing: {command_str}")
+    logging.info(f"Executing: {command_str}")
     process_obj = subprocess.Popen(command_str, 
                                     shell=True, 
                                     stdout=command_redirect_stdout_to, 
@@ -53,6 +53,7 @@ def execute(command_str, **kwargs):
     time.sleep(0.1)
     summary_dict['status'] = True
     if command_no_wait:
+        logging.debug("Not waiting for command to finish")
         return summary_dict  # When doesn't want to wait - Finish here
         
     
@@ -60,6 +61,7 @@ def execute(command_str, **kwargs):
     try:
         timer = None # Default - No timer
         if command_timeout_sec:
+            logging.debug(f"Preparing timer of {command_timeout_sec} seconds and waiting for command to finish")
             callback_func_kwargs_dict = {'err_msg' : f'Executed command timed out after {command_timeout_sec} seconds', 'process_obj': process_obj}
             timer = Timer(command_timeout_sec, _command_raise_timedout_exception, [], callback_func_kwargs_dict)
             timer.start()  # Start the timer, and loop while waiting for command to finish
