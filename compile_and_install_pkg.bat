@@ -65,8 +65,33 @@ echo.
 	echo Found Wheel-File to install: %CD%\dist\!wheelFile!
 	CHOICE /C YN /M "Install pacakge from file - Are you sure"
 	if %errorlevel% equ 2 echo Aborting.. && pause && exit 1
+	
+	
+	:: Venv
 	echo.
-	echo Preparing virtual env dir: '%vritualEnvDirName%' for the installation
+	call :COLOR_PRINT "Preparing virtual-env dir: %vritualEnvDirName% for the installation" "Yellow"
+	set venvCmnd=python -m venv "%CD%\%vritualEnvDirName%"
+		:: Validate venv activation script
+	if not exist "%CD%\%vritualEnvDirName%\Scripts\activate.bat" (
+		echo Creating virtual-env dir: %CD%\%vritualEnvDirName%
+		echo Executing: %venvCmnd%
+		%venvCmnd%
+		if !errorlevel! neq 0 echo. && call :COLOR_PRINT "Error - Bad exit code from creating virtual env command"  "RED" && echo Failure during execution of: %venvCmnd% && echo Failed to create a virtual env at: %CD%\%vritualEnvDirName% && echo. && echo Aborting.. && pause && exit /b 1
+		echo Success - created virtual env at: %CD%\%vritualEnvDirName%
+		if not exist "%CD%\%vritualEnvDirName%\Scripts\activate.bat" echo. && call :COLOR_PRINT "Error - Missing or unreacahble script  %CD%\%vritualEnvDirName%\Scripts\activate.bat"  "RED" && echo After creating a virtual env with exit code 0 at: %CD%\%vritualEnvDirName% && echo failed to locate venv activation script: %CD%\%vritualEnvDirName%\Scripts\activate.bat && echo Cannot activate the newly created virtual env && echo. && echo Aborting.. && pause && exit /b 1
+	)
+	
+	
+	:: Activate virtual env
+	if not defined VIRTUAL_ENV (
+		echo Variable 'VIRTUAL_ENV' is not defined - assuming virtual env is not activated yet
+		echo Activating virtual environment now..
+		echo Calling 'activate.bat' script: %CD%\%vritualEnvDirName%\Scripts\activate.bat
+		call "%CD%\%vritualEnvDirName%\Scripts\activate.bat"
+		if !errorlevel! neq 0 echo. && call :COLOR_PRINT "Error - Bad exit code from calling virtual env activation script  %CD%\%vritualEnvDirName%\Scripts\activate.bat"  "RED" && echo Attempted to activate newly created virtual env by calling activation script: %CD%\%vritualEnvDirName%\Scripts\activate.bat && echo  but calling activation script exited with a non zero code && echo Failed to activate the newly created virtual env: %CD%\%vritualEnvDirName% && echo. && echo Aborting.. && pause && exit /b 1
+		if not defined VIRTUAL_ENV echo. && call :COLOR_PRINT "Error - Missing env VIRTUAL_ENV"  "RED" && echo Attempted to activate newly created virtual env by calling activation script: %CD%\%vritualEnvDirName%\Scripts\activate.bat && echo  but after calling the activation script, env: 'VIRTUAL_ENV' is stil missing && echo Failed to activate the newly created virtual env: %CD%\%vritualEnvDirName% && echo. && echo Aborting.. && pause && exit /b 1
+		echo Success - Finished activating virtual environment
+	)
 	
 	echo Installing..
 	set installCmnd=python -m pip install --upgrade --no-deps --force-reinstall %CD%\dist\!wheelFile!
