@@ -42,7 +42,7 @@ def execute(command_str, **kwargs):
     def _timedout(err_msg):
         raise TimeoutError(err_msg)
 
-    timer = Timer(command_timeout_sec, _timedout(f'Executed process timed out after {command_timeout_sec} seconds'))
+    timer = Timer(command_timeout_sec, _timedout(f'Executed command timed out after {command_timeout_sec} seconds'))
     try:
         timer.start()
         stdout, stderr = proc.communicate()
