@@ -1,9 +1,14 @@
 # Executes a command on windows CMD or unix Shell 
 
+import logging
 import subprocess
 import time
 from threading import Timer
 
+
+
+def _command_skip_printings(msg):
+    pass
 
 def _command_raise_timedout_exception(**kwargs):
     default_err_msg = "Executed command timed out"
@@ -26,14 +31,16 @@ def execute(command_str, **kwargs):
     command_no_wait              = kwargs.get("command_no_wait", False)  
 
     # Check Mandatory params
+    logging.debug('Checking mandatory params')
     if command_str is None:
+        logging.debug("Missing mandatory param for function execute() : 'command_str' ")
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
     
     # Assign printing func
     printing_func = print
     if command_hide_output:
-        printing_func = skip_printings
+        printing_func = _command_skip_printings
 
     print(f"Executing: {command_str}")
     process_obj = subprocess.Popen(command_str, 
@@ -78,8 +85,7 @@ def execute(command_str, **kwargs):
     summary_dict["exitcode"] = process_obj.returncode
     summary_dict["output"] = proc_out
     return summary_dict
-def skip_printings(msg):
-    pass
+
 
 result = execute("asdadsas ping localhost -n 2", command_timeout_sec=5)
 execute("ping localhost -n 10")
