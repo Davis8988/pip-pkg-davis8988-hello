@@ -2,11 +2,12 @@
 
 import subprocess
 import time
+from threading import Timer
 
 def execute(command_str, **kwargs):
     summary_dict                 = {"status" : False, "info" : '', 'exitcode': None, 'output': None}
     command_str                  = kwargs.get("command_str", command_str)  
-    command_timeout              = kwargs.get("command_timeout")  
+    command_timeout_sec          = kwargs.get("command_timeout_sec")  
     command_cwd                  = kwargs.get("command_cwd")  
     command_redirect_stdout_to   = kwargs.get("command_redirect_stdout_to", subprocess.PIPE)  
     command_redirect_stderr_to   = kwargs.get("command_redirect_stderr_to", subprocess.STDOUT)  
@@ -36,6 +37,17 @@ def execute(command_str, **kwargs):
         return summary_dict  # When doesn't want to wait - Finish here
         
     proc_out = ''
+
+
+    def _timedout(err_msg):
+        raise TimeoutError(err_msg)
+
+    timer = Timer(command_timeout_sec, _timedout(f'Executed process timed out after {command_timeout_sec} seconds'))
+    try:
+        timer.start()
+        stdout, stderr = proc.communicate()
+    finally:
+        timer.cancel()
     while processObj.poll() is None:
         # print("Still waiting..")
         stdout = processObj.stdout
@@ -58,6 +70,7 @@ def execute(command_str, **kwargs):
 def skip_printings(msg):
     pass
 
-execute("asdadsas ping localhost -n 2")
+result = execute("asdadsas ping localhost -n 2")
+execute("ping localhost -n 10")
 
 
