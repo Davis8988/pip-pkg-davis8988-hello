@@ -44,25 +44,25 @@ def execute(command_str, **kwargs):
 
     timer = Timer(command_timeout_sec, _timedout(f'Executed command timed out after {command_timeout_sec} seconds'))
     try:
-        timer.start()
-        stdout, stderr = proc.communicate()
+        timer.start()  # Start the timer, and loop while waiting for command to finish
+        
+        while processObj.poll() is None:
+            # print("Still waiting..")
+            stdout = processObj.stdout
+            stderr = processObj.stderr
+            if stdout:
+                for line in stdout:
+                    line = line.decode(command_output_decode).strip()
+                    proc_out += line + "\n"  # Python automatically translates '\n' to the proper newline character for your platform
+                    printing_func(line)
+            if stderr:
+                for line in stderr:
+                    line = line.decode(command_output_decode).strip()
+                    proc_out += line + "\n"
+                    printing_func("Stderr:", line)
+            time.sleep(1)
     finally:
         timer.cancel()
-    while processObj.poll() is None:
-        # print("Still waiting..")
-        stdout = processObj.stdout
-        stderr = processObj.stderr
-        if stdout:
-            for line in stdout:
-                line = line.decode(command_output_decode).strip()
-                proc_out += line + "\n"  # Python automatically translates '\n' to the proper newline character for your platform
-                printing_func(line)
-        if stderr:
-            for line in stderr:
-                line = line.decode(command_output_decode).strip()
-                proc_out += line + "\n"
-                printing_func("Stderr:", line)
-        time.sleep(1)
     
     summary_dict["exitcode"] = processObj.returncode
     summary_dict["output"] = proc_out
