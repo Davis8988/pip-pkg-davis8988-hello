@@ -49,7 +49,7 @@ def execute(command_str, **kwargs):
     
     # Start
     try:
-        timer = Timer(-1, None) # Default - No timer
+        timer = None # Default - No timer
         if command_timeout_sec:
             callback_func_kwargs_dict = {'err_msg' : f'Executed command timed out after {command_timeout_sec} seconds', 'process_obj': process_obj}
             timer = Timer(command_timeout_sec, _command_raise_timedout_exception, [], callback_func_kwargs_dict)
@@ -72,7 +72,8 @@ def execute(command_str, **kwargs):
                     printing_func("Stderr:", line)
             time.sleep(1)
     finally:
-        timer.cancel()
+        if timer is not None:
+            timer.cancel()
     
     summary_dict["exitcode"] = process_obj.returncode
     summary_dict["output"] = proc_out
