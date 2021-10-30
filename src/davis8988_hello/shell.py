@@ -30,7 +30,7 @@ def execute(command_str, **kwargs):
         printing_func = skip_printings
 
     print(f"Executing: {command_str}")
-    processObj = subprocess.Popen(command_str, 
+    process_obj = subprocess.Popen(command_str, 
                                     shell=True, 
                                     stdout=command_redirect_stdout_to, 
                                     stderr=command_redirect_stderr_to,
@@ -46,10 +46,10 @@ def execute(command_str, **kwargs):
     try:
         timer.start()  # Start the timer, and loop while waiting for command to finish
         
-        while processObj.poll() is None:
+        while process_obj.poll() is None:
             # print("Still waiting..")
-            stdout = processObj.stdout
-            stderr = processObj.stderr
+            stdout = process_obj.stdout
+            stderr = process_obj.stderr
             if stdout:
                 for line in stdout:
                     line = line.decode(command_output_decode).strip()
@@ -61,10 +61,12 @@ def execute(command_str, **kwargs):
                     proc_out += line + "\n"
                     printing_func("Stderr:", line)
             time.sleep(1)
+    except TimeoutError:
+        process_obj.kill()
     finally:
         timer.cancel()
     
-    summary_dict["exitcode"] = processObj.returncode
+    summary_dict["exitcode"] = process_obj.returncode
     summary_dict["output"] = proc_out
     return summary_dict
 def skip_printings(msg):
