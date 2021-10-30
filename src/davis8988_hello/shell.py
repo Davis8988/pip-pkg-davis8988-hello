@@ -69,9 +69,6 @@ def execute(command_str, **kwargs):
                     proc_out += line + "\n"
                     printing_func("Stderr:", line)
             time.sleep(1)
-    except TimeoutError as err_msg:
-        process_obj.kill()
-        raise TimeoutError(err_msg)
     finally:
         timer.cancel()
     
