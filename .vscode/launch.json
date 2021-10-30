@@ -17,7 +17,8 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "python.pythonPath": "venv/Scripts/python.exe"
+            "python.pythonPath": "venv/Scripts/python.exe",
+            "python.venvPath": "venv"
         }
     ]
 }
