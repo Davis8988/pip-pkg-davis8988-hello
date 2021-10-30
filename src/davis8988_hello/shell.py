@@ -40,8 +40,8 @@ def execute(command_str, **kwargs):
     if command_no_wait:
         return summary_dict  # When doesn't want to wait - Finish here
         
-
-    timer = Timer(command_timeout_sec, _command_raise_timedout_exception, f'Executed command timed out after {command_timeout_sec} seconds')
+    callback_func_args = [f'Executed command timed out after {command_timeout_sec} seconds']
+    timer = Timer(command_timeout_sec, _command_raise_timedout_exception, callback_func_args)
     proc_out = ''
     try:
         timer.start()  # Start the timer, and loop while waiting for command to finish
@@ -70,7 +70,7 @@ def execute(command_str, **kwargs):
 def skip_printings(msg):
     pass
 
-result = execute("asdadsas ping localhost -n 2")
-execute("ping localhost -n 10")
+result = execute("asdadsas ping localhost -n 2", command_timeout_sec=5)
+execute("ping localhost -n 10", command_timeout_sec=5)
 
 
