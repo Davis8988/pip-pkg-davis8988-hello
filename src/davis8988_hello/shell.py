@@ -46,6 +46,8 @@ def execute(command_str, **kwargs):
     if command_no_wait:
         return summary_dict  # When doesn't want to wait - Finish here
         
+    
+    # Start
     try:
         callback_func_kwargs_dict = {'err_msg' : f'Executed command timed out after {command_timeout_sec} seconds', 'process_obj': process_obj}
         timer = Timer(command_timeout_sec, _command_raise_timedout_exception, [], callback_func_kwargs_dict)
