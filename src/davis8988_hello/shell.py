@@ -5,8 +5,13 @@ import time
 from threading import Timer
 
 
-def _command_raise_timedout_exception(err_msg):
-        raise TimeoutError(err_msg)
+def _command_raise_timedout_exception(**kwargs):
+    default_err_msg = "Executed command timed out"
+    err_msg = kwargs.get("err_msg", default_err_msg) 
+    process_obj = kwargs.get("process_obj", None) 
+    if process_obj:
+        process_obj.kill()
+    raise TimeoutError(err_msg)
 
 def execute(command_str, **kwargs):
     summary_dict                 = {"status" : False, "info" : '', 'exitcode': None, 'output': None}
