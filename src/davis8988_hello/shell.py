@@ -4,6 +4,10 @@ import subprocess
 import time
 from threading import Timer
 
+
+def _command_raise_timedout_exception(err_msg):
+        raise TimeoutError(err_msg)
+
 def execute(command_str, **kwargs):
     summary_dict                 = {"status" : False, "info" : '', 'exitcode': None, 'output': None}
     command_str                  = kwargs.get("command_str", command_str)  
@@ -36,13 +40,9 @@ def execute(command_str, **kwargs):
     if command_no_wait:
         return summary_dict  # When doesn't want to wait - Finish here
         
+
+    timer = Timer(command_timeout_sec, _command_raise_timedout_exception, f'Executed command timed out after {command_timeout_sec} seconds')
     proc_out = ''
-
-
-    def _timedout(err_msg):
-        raise TimeoutError(err_msg)
-
-    timer = Timer(command_timeout_sec, _timedout(f'Executed command timed out after {command_timeout_sec} seconds'))
     try:
         timer.start()  # Start the timer, and loop while waiting for command to finish
         
