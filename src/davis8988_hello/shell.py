@@ -44,21 +44,23 @@ def execute(command_str, **kwargs):
     if command_hide_output:
         printing_func = _command_skip_printings
 
-    logging.info(f"Executing: {command_str}")
-    process_obj = subprocess.Popen(command_str, 
-                                    shell=True, 
-                                    stdout=command_redirect_stdout_to, 
-                                    stderr=command_redirect_stderr_to,
-                                    cwd=command_cwd )
-    time.sleep(0.1)
-    summary_dict['status'] = True
-    if command_no_wait:
-        logging.debug("Not waiting for command to finish")
-        return summary_dict  # When doesn't want to wait - Finish here
+
+    try:    
+        logging.info(f"Executing: {command_str}")
+        process_obj = subprocess.Popen(command_str, 
+                                        shell=True, 
+                                        stdout=command_redirect_stdout_to, 
+                                        stderr=command_redirect_stderr_to,
+                                        cwd=command_cwd )
+        time.sleep(0.1)
+        summary_dict['status'] = True
+        if command_no_wait:
+            logging.debug("Not waiting for command to finish")
+            return summary_dict  # When doesn't want to wait - Finish here
         
     
-    # Start
-    try:
+    
+        # Start
         timer = None # Default - No timer
         if command_timeout_sec:
             logging.debug(f"Preparing timer of {command_timeout_sec} seconds and waiting for command to finish")
