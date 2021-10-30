@@ -51,23 +51,21 @@ echo.
 	call :COLOR_PRINT "=== Installing pkg: %pkgName% ===" "Cyan"
 	echo Validating env..
 	if not exist "dist\*.whl" echo. && call :COLOR_PRINT "Error - Missing or unreachable install pkg wheel file at: %CD%\dist" "RED" && echo Cannot install pkg: %pkgName% && echo. && echo Aborting.. && pause && exit /b 1
-	where venv >nul 2>&1 || echo. && call :COLOR_PRINT "Error - Missing venv.exe from system-path" "RED" && echo Did you install virtualenv ? && call :COLOR_PRINT "You should install virtualenv by executing: pip install virtualenv" "Yellow" && echo and then re-execute this script && echo. && echo Aborting.. && pause && exit /b 1
-	echo Continuing..
-	:: Create Virtual Environment
 	
 	
-	
+	:: Check wheel file is present after the compile
 	echo Continuing with installation
 	echo Looking for install pkg wheel file
 	set wheelFile=
 	for /f %%a in ('dir /b dist\*.whl') do (set wheelFile=%%a)  && REM  Built-in sorting ensures the latest whl file is installed
 	if not defined wheelFile echo. && call :COLOR_PRINT "Error - Failed to define var: wheelFile with name of pkg wheel file at: %CD%\dist\*.whl" "RED" && echo Cannot install pkg: %pkgName% && echo. && echo Aborting.. && pause && exit /b 1
-	echo Found Wheel-File to install: %CD%\dist\!wheelFile!
-	CHOICE /C YN /M "Install pacakge from file - Are you sure"
+	echo OK. Found. && echo.
+	echo Install pacakge from wheel file: %CD%\dist\!wheelFile!
+	CHOICE /C YN /M "Are you sure"
 	if %errorlevel% equ 2 echo Aborting.. && pause && exit 1
 	
 	
-	:: Venv
+	:: Create Virtual Environment
 	echo.
 	call :COLOR_PRINT "Preparing virtual-env dir: %vritualEnvDirName% for the installation" "Yellow"
 	set venvCmnd=python -m venv "%CD%\%vritualEnvDirName%"
