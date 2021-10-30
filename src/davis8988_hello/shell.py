@@ -84,6 +84,7 @@ def execute(command_str, **kwargs):
             time.sleep(1)
     finally:
         if timer is not None:
+            logging.debug(f"Cancelling started command timer")
             timer.cancel()
     
     summary_dict["exitcode"] = process_obj.returncode
