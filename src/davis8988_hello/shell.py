@@ -82,6 +82,6 @@ def skip_printings(msg):
     pass
 
 result = execute("asdadsas ping localhost -n 2", command_timeout_sec=5)
-execute("ping localhost -n 10", command_timeout_sec=5)
+execute("ping localhost -n 10")
 
 
