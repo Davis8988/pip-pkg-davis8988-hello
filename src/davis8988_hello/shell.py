@@ -6,7 +6,6 @@ import time
 from threading import Timer
 
 
-
 def _command_skip_printings(msg):
     pass
 
@@ -21,6 +20,9 @@ def _command_raise_timedout_exception(**kwargs):
 
 def execute(command_str, **kwargs):
     summary_dict                 = {"status" : False, "info" : '', 'exitcode': None, 'output': None}
+    all_args_str = '\n'.join('='.join((key,str(val))) for (key,val) in kwargs.items())
+    logging.debug(f'Received params:\n{all_args_str}')
+
     command_str                  = kwargs.get("command_str", command_str)  
     command_timeout_sec          = kwargs.get("command_timeout_sec")  
     command_cwd                  = kwargs.get("command_cwd")  
