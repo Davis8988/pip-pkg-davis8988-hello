@@ -21,10 +21,16 @@ def get_root_logger(**kwargs):
 def _add_console_logging_handler(**kwargs):
     summary_dict = {"status" : True, "info" : '', 'logger': None}
     logger = kwargs.get("logger", None)
-    if logger is None:
-        func_name = inspect.stack[0][3]
+    try:
+        if logger is None:
+            func_name = inspect.stack[0][3]
+            raise TypeError(f"Missing key 'logger' for module.func: {__name__ }.{func_name}()")
+        
+        
+        summary_dict['logger'] = logger  # Success case
+    except Exception as err_msg:
         summary_dict['status'] = False
-        summary_dict['info'] = f"Missing key 'logger' for module.func: {__name__ }.{func_name}()"
-        return summary_dict
-    summary_dict['logger'] = logger
+        summary_dict['info'] = err_msg
+        summary_dict['logger'] = None
+    
     return summary_dict
