@@ -1,5 +1,6 @@
 # This module configures the root logger for logging
 import logging
+import global_vars
 import inspect
 from sys import stdout  # Only need to log to console
 
