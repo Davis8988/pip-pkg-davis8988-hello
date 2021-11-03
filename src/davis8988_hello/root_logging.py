@@ -26,6 +26,7 @@ def get_root_logger(**kwargs):
             result_dict['info'] = err_msg
             result_dict['result'] = False
             return result_dict
+    root_logger.setLevel(logging.DEBUG)
     result_dict['root_logger'] = root_logger
     return result_dict
 
