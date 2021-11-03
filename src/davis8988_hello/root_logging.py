@@ -2,7 +2,7 @@
 import logging
 import inspect
 
-# Returns the root logger
+# Returns a summary dict with the root logger under 'logger' key
 def get_root_logger(**kwargs):
     summary_dict = {"status" : True, "info" : '', 'logger': None}
     root_logger = logging.getLogger() if not logging.getLogger().hasHandlers() else logging.getLogger()
