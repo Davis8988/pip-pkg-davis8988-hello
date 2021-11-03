@@ -6,7 +6,7 @@ import time
 from threading import Timer
 
 
-# Get root logger
+# Gets root logger or raises an Exception
 root_logger = root_logging.get_root_logger_or_fail()
 
 
