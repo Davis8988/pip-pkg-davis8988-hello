@@ -6,7 +6,7 @@ from sys import stdout  # Only need to log to console
 
 # Returns a summary dict with the root logger under 'logger' key
 def get_root_logger(**kwargs):
-    result_dict = {"result" : True, "info" : '', 'logger': None}
+    result_dict = {"result" : True, "info" : '', 'root_logger': None}
     root_logger = logging.getLogger() if not logging.getLogger().hasHandlers() else logging.getLogger()
     if not root_logger.hasHandlers():
         add_console_logging_handler_result_dict = _add_console_logging_handler(logger=root_logger)  # Add console logging to 'root_logger' obj
@@ -17,7 +17,7 @@ def get_root_logger(**kwargs):
             result_dict['info'] = err_msg
             result_dict['result'] = False
             return result_dict
-    result_dict['logger'] = root_logger
+    result_dict['root_logger'] = root_logger
     return result_dict
 
 
