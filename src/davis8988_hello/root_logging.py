@@ -4,10 +4,19 @@ import inspect
 from sys import stdout  # Only need to log to console
 
 
-# Returns a summary dict with the root logger under 'logger' key
+# Returns the root logger or raises an exception
+def get_root_logger_or_fail(**kwargs):
+    get_root_logger_result_dict = get_root_logger() 
+    if not get_root_logger_result_dict['result']:
+        print(get_root_logger_result_dict['info']) 
+        raise Exception(get_root_logger_result_dict['info']) 
+    return get_root_logger_result_dict['root_logger']  # No need to check if this is not None since: get_root_logger_result_dict['result'] == True
+
+
+# Returns a result dict with the root logger under 'logger' key
 def get_root_logger(**kwargs):
     result_dict = {"result" : True, "info" : '', 'root_logger': None}
-    root_logger = logging.getLogger() if not logging.getLogger().hasHandlers() else logging.getLogger()
+    root_logger = logging.getLogger()
     if not root_logger.hasHandlers():
         add_console_logging_handler_result_dict = _add_console_logging_handler(logger=root_logger)  # Add console logging to 'root_logger' obj
         if not add_console_logging_handler_result_dict['result']:
