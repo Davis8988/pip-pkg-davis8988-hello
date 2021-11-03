@@ -1,12 +1,12 @@
 # Executes a command on windows CMD or unix Shell 
 
-import logging
+import root_logging
 import subprocess
 import time
 from threading import Timer
 
-# Create logger only if root logger doesn't exist
-root_logger = logging.getLogger() if not logging.getLogger().hasHandlers() else logging.getLogger()
+
+root_logger = root_logging.get_root_logger() 
 
 
 def _command_skip_printings(msg):
