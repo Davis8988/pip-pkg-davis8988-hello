@@ -28,7 +28,6 @@ def get_root_logger(**kwargs):
             result_dict['result'] = False
             return result_dict
     root_logger.setLevel(global_vars._logging_format_console_level)
-    formatter = logging.Formatter(global_vars.)
     result_dict['root_logger'] = root_logger
     return result_dict
 
@@ -43,6 +42,8 @@ def _add_console_logging_handler(**kwargs):
             raise TypeError(f"Missing key 'logger' for module.func: {__name__ }.{func_name}()")
         console_handler = logging.StreamHandler(stdout)
         console_handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter(global_vars._logging_console_format)
+        console_handler.setFormatter(formatter)
         logger.addHandler(console_handler)
         result_dict['logger'] = logger  # Success case
     except Exception as err_msg:
