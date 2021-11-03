@@ -42,7 +42,7 @@ def _add_console_logging_handler(**kwargs):
             raise TypeError(f"Missing key 'logger' for module.func: {__name__ }.{func_name}()")
         console_handler = logging.StreamHandler(stdout)
         console_handler.setLevel(logging.DEBUG)
-        formatter = logging.Formatter(fmt=global_vars._logging_console_format, datefmt=global_vars._logging_format_date)
+        formatter = logging.Formatter(fmt=global_vars._logging_console_format, datefmt=global_vars._logging_console_date_format)
         console_handler.setFormatter(formatter)
         logger.addHandler(console_handler)
         result_dict['logger'] = logger  # Success case
