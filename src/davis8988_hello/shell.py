@@ -7,7 +7,10 @@ from threading import Timer
 
 
 get_root_logger_result_dict = root_logging.get_root_logger() 
-if 
+if not get_root_logger_result_dict['result']:
+    print(get_root_logger_result_dict['info'])
+    raise Exception(get_root_logger_result_dict['info']) # This should occur on import failures - then printing is required
+
 root_logger = root_logging.get_root_logger() 
 
 
