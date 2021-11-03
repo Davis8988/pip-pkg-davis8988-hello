@@ -38,7 +38,9 @@ def _add_console_logging_handler(**kwargs):
         if logger is None:
             func_name = inspect.stack[0][3]
             raise TypeError(f"Missing key 'logger' for module.func: {__name__ }.{func_name}()")
-        logger.addHandler(logging.StreamHandler(stdout))
+        console_handler = logging.StreamHandler(stdout)
+        console_handler.setLevel(logging.DEBUG)
+        logger.addHandler(console_handler)
         result_dict['logger'] = logger  # Success case
     except Exception as err_msg:
         result_dict['result'] = False
