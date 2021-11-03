@@ -3,12 +3,19 @@ import logging
 import inspect
 
 # Returns the root logger
-def getRootLogger(**kwargs):
+def get_root_logger(**kwargs):
+    summary_dict = {"status" : True, "info" : '', 'logger': None}
     root_logger = logging.getLogger() if not logging.getLogger().hasHandlers() else logging.getLogger()
     if not root_logger.hasHandlers():
-        summary_dict = _add_console_logging_handler()
-
-    return root_logger
+        add_console_logging_handler_result_dict = _add_console_logging_handler(logger=root_logger)  # Add console logging to 'root_logger' obj
+        if not add_console_logging_handler_result_dict['status']:
+            err_msg = f"Error: {add_console_logging_handler_result_dict['info']} \nFailed adding console logging handler to root logger"
+            print(err_msg)
+            summary_dict['info'] = err_msg
+            summary_dict['status'] = False
+            return summary_dict
+    summary_dict['logger'] = root_logger
+    return summary_dict
 
 
 def _add_console_logging_handler(**kwargs):
