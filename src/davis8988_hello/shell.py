@@ -5,6 +5,9 @@ import subprocess
 import time
 from threading import Timer
 
+# Create logger only if root logger doesn't exist
+root_logger = logging.getLogger() if not logging.getLogger().hasHandlers() else logging.getLogger()
+
 
 def _command_skip_printings(msg):
     pass
@@ -21,7 +24,7 @@ def _command_raise_timedout_exception(**kwargs):
 def execute(command_str, **kwargs):
     summary_dict                 = {"status" : False, "info" : '', 'exitcode': None, 'output': None}
     all_args_str = '\n'.join('='.join((key,str(val))) for (key,val) in kwargs.items())
-    logging.debug(f'Received params:\n{all_args_str}')
+    root_logger.debug(f'Received params:\n{all_args_str}')
 
     command_str                  = kwargs.get("command_str", command_str)  
     command_timeout_sec          = kwargs.get("command_timeout_sec")  
@@ -33,20 +36,20 @@ def execute(command_str, **kwargs):
     command_no_wait              = kwargs.get("command_no_wait", False)  
 
     # Check Mandatory params
-    logging.debug('Checking mandatory params')
+    root_logger.debug('Checking mandatory params')
     if command_str is None:
-        logging.debug("Missing mandatory param for function execute() : 'command_str' ")
+        root_logger.debug("Missing mandatory param for function execute() : 'command_str' ")
         summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
         return summary_dict
     
-    # Assign printing func
-    printing_func = logging.info
+    # Assign command output printing func
+    printing_func = root_logger.info
     if command_hide_output:
         printing_func = _command_skip_printings
 
 
     try:    
-        logging.info(f"Executing: {command_str}")
+        root_logger.info(f"Executing: {command_str}")
         process_obj = subprocess.Popen(command_str, 
                                         shell=True, 
                                         stdout=command_redirect_stdout_to, 
@@ -57,13 +60,13 @@ def execute(command_str, **kwargs):
 
         # No wait
         if command_no_wait:
-            logging.debug("Not waiting for command to finish")
+            root_logger.debug("Not waiting for command to finish")
             return summary_dict  # When doesn't want to wait - Finish here
     
         # Wait for command to finish
         timer = None # Default - No timer
         if command_timeout_sec:
-            logging.debug(f"Preparing timer of {command_timeout_sec} seconds and waiting for command to finish")
+            root_logger.debug(f"Preparing timer of {command_timeout_sec} seconds and waiting for command to finish")
             callback_func_kwargs_dict = {'err_msg' : f'Executed command timed out after {command_timeout_sec} seconds', 'process_obj': process_obj}
             timer = Timer(command_timeout_sec, _command_raise_timedout_exception, [], callback_func_kwargs_dict)
             timer.start()  # Start the timer, and loop while waiting for command to finish
@@ -85,13 +88,13 @@ def execute(command_str, **kwargs):
                     printing_func("Stderr:", line)
             time.sleep(1)
     except BaseException as err_msg:
-        logging.info(f"ERROR: {err_msg}")
+        root_logger.info(f"ERROR: {err_msg}")
         summary_dict['status'] = False
         summary_dict['info'] = err_msg
         return summary_dict
     finally:
         if timer is not None:
-            logging.debug("Cancelling started command timer")
+            root_logger.debug("Cancelling started command timer")
             timer.cancel()
     
     summary_dict["exitcode"] = process_obj.returncode
