@@ -3,6 +3,7 @@ import logging
 import inspect
 from sys import stdout  # Only need to log to console
 
+
 # Returns a summary dict with the root logger under 'logger' key
 def get_root_logger(**kwargs):
     summary_dict = {"status" : True, "info" : '', 'logger': None}
