@@ -11,7 +11,7 @@ if not get_root_logger_result_dict['result']:
     print(get_root_logger_result_dict['info'])  # This should occur on import failures - then printing & raising exceptions are required
     raise Exception(get_root_logger_result_dict['info']) 
 
-root_logger = get_root_logger_result_dict['logger']
+root_logger = get_root_logger_result_dict['root_logger']
 
 
 def _command_skip_printings(msg):
