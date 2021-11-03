@@ -13,7 +13,7 @@ def get_root_logger(**kwargs):
         if not add_console_logging_handler_result_dict['status']:
             prev_err_msg = add_console_logging_handler_result_dict['info']
             err_msg = f"Error: {prev_err_msg} \nFailed adding console logging handler to root logger"
-            print(err_msg)
+            # print(err_msg)
             result_dict['info'] = err_msg
             result_dict['status'] = False
             return result_dict
