@@ -35,12 +35,3 @@ def _add_console_logging_handler(**kwargs):
         summary_dict['info'] = err_msg
         summary_dict['logger'] = None
     return summary_dict
-
-
-# Returns True if a logger instance contains a handler named 'console' and False  
-def _is_logger_contain_console_logging_handler(**kwargs):
-    logger = kwargs.get('logger', None)
-    if logger is None:
-        return False
-    try:
-        handlers = logger.getHandlers()
