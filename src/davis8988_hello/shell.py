@@ -6,6 +6,7 @@ import time
 from threading import Timer
 
 
+get_root_logger_result_dict = root_logging.get_root_logger() 
 root_logger = root_logging.get_root_logger() 
 
 
