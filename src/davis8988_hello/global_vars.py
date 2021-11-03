@@ -3,7 +3,7 @@
 import logging
 
 # Logging
-_logging_format_date = '%d-%b-%y %H:%M:%S'
-_logging_console_format = '%(asctime)s - %(levelname)s : %(message)s'
+_logging_format_date = '%H:%M:%S'
+_logging_console_format = '[%(levelname)-5s] %(asctime)s : %(message)s'
 _logging_console_date_format = _logging_format_date
 _logging_console_level = logging.DEBUG
