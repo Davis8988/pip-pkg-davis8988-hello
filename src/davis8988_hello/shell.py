@@ -27,7 +27,7 @@ def _command_raise_timedout_exception(**kwargs):
     raise TimeoutError(err_msg)
 
 def execute(command_str, **kwargs):
-    summary_dict = {"status" : True, "info" : '', 'exitcode': None, 'output': None}
+    result_dict = {"result" : True, "info" : '', 'exitcode': None, 'output': None}
     all_args_str = '\n'.join('='.join((key,str(val))) for (key,val) in kwargs.items())
     root_logger.debug(f'Received params:\n{all_args_str}')
 
@@ -44,9 +44,9 @@ def execute(command_str, **kwargs):
     root_logger.debug('Checking mandatory params')
     if command_str is None:
         root_logger.debug("Missing mandatory param for function execute() : 'command_str' ")
-        summary_dict['status'] = False
-        summary_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
-        return summary_dict
+        result_dict['result'] = False
+        result_dict['info'] = "Missing mandatory param for function execute() : 'command_str' "
+        return result_dict
     
     # Assign command output printing func
     printing_func = root_logger.info
@@ -66,7 +66,7 @@ def execute(command_str, **kwargs):
         # No wait
         if command_no_wait:
             root_logger.debug("Not waiting for command to finish")
-            return summary_dict  # When doesn't want to wait - Finish here
+            return result_dict  # When doesn't want to wait - Finish here
     
         # Wait for command to finish
         timer = None # Default - No timer
@@ -94,17 +94,17 @@ def execute(command_str, **kwargs):
             time.sleep(1)
     except BaseException as err_msg:
         root_logger.info(f"ERROR: {err_msg}")
-        summary_dict['status'] = False
-        summary_dict['info'] = err_msg
-        return summary_dict
+        result_dict['result'] = False
+        result_dict['info'] = err_msg
+        return result_dict
     finally:
         if timer is not None:
             root_logger.debug("Cancelling started command timer")
             timer.cancel()
     
-    summary_dict["exitcode"] = process_obj.returncode
-    summary_dict["output"] = proc_out
-    return summary_dict
+    result_dict["exitcode"] = process_obj.returncode
+    result_dict["output"] = proc_out
+    return result_dict
 
 
 result = execute("asdadsas ping localhost -n 2", command_timeout_sec=5)
