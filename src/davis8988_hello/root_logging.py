@@ -10,7 +10,8 @@ def get_root_logger(**kwargs):
     if not root_logger.hasHandlers():
         add_console_logging_handler_result_dict = _add_console_logging_handler(logger=root_logger)  # Add console logging to 'root_logger' obj
         if not add_console_logging_handler_result_dict['status']:
-            err_msg = f"Error: {add_console_logging_handler_result_dict['info']} \nFailed adding console logging handler to root logger"
+            prev_err_msg = add_console_logging_handler_result_dict['info']
+            err_msg = f"Error: {prev_err_msg} \nFailed adding console logging handler to root logger"
             print(err_msg)
             summary_dict['info'] = err_msg
             summary_dict['status'] = False
@@ -19,7 +20,7 @@ def get_root_logger(**kwargs):
     return summary_dict
 
 
-# Adds a console logging handler if not already exists
+# Adds a console logging handler
 def _add_console_logging_handler(**kwargs):
     summary_dict = {"status" : True, "info" : '', 'logger': None}
     logger = kwargs.get("logger", None)
@@ -27,12 +28,19 @@ def _add_console_logging_handler(**kwargs):
         if logger is None:
             func_name = inspect.stack[0][3]
             raise TypeError(f"Missing key 'logger' for module.func: {__name__ }.{func_name}()")
-        
         logger.addHandler(logging.StreamHandler(stdout))
         summary_dict['logger'] = logger  # Success case
     except Exception as err_msg:
         summary_dict['status'] = False
         summary_dict['info'] = err_msg
         summary_dict['logger'] = None
-    
     return summary_dict
+
+
+# Returns True if a logger instance contains a handler named 'console' and False  
+def _is_logger_contain_console_logging_handler(**kwargs):
+    logger = kwargs.get('logger', None)
+    if logger is None:
+        return False
+    try:
+        handlers = logger.getHandlers()
