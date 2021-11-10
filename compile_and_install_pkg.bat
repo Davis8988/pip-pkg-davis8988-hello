@@ -68,7 +68,7 @@ echo.
 	:: Create Virtual Environment
 	echo.
 	call :COLOR_PRINT "Preparing virtual-env dir: %vritualEnvDirName% for the installation" "Yellow"
-	set venvCmnd=python -m venv "%CD%\%vritualEnvDirName%"
+	set venvCmnd=python -m venv "%CD%\%vritualEnvDirName%" --system-site-packages
 		:: Validate venv activation script
 	if not exist "%CD%\%vritualEnvDirName%\Scripts\activate.bat" (
 		echo Creating virtual-env dir: %CD%\%vritualEnvDirName%
