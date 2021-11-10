@@ -102,8 +102,8 @@ def execute(command_str, **kwargs):
     result_dict["output"] = proc_out
     return result_dict
 
-
-result = execute("asdadsas ping localhost -n 2", command_timeout_sec=5)
-execute("ping localhost -n 10")
+# Examples
+# result = execute("asdadsas ping localhost -n 2", command_timeout_sec=5)
+# execute("ping localhost -n 10")
 
 
