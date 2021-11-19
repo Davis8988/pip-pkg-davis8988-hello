@@ -29,10 +29,11 @@ echo.
 	where python >nul 2>&1 || echo. && call :COLOR_PRINT "Error - Missing python.exe from system-path" "RED" && echo Did you install python? && echo Cannot compile pkg: '%pkgName%' && echo. && echo Aborting.. && pause && exit /b 1
 	echo OK && echo.
 	
-	call :COLOR_PRINT "Setting env: LOCAL_BUILD_VERSION=%buildVersion%" "Yellow"
+	call :COLOR_PRINT "Setting pkg version env:" "Yellow"
+	call :COLOR_PRINT " LOCAL_BUILD_VERSION=%buildVersion%" "Yellow"
 	set LOCAL_BUILD_VERSION=%buildVersion%
 	
-	call :COLOR_PRINT "Compiling.." "Yellow"
+	echo. && call :COLOR_PRINT "Compiling.." "Yellow"
 	set compileCmnd=python "%setupFile%" bdist_wheel
 	echo. && echo Executing: %compileCmnd% && echo.
 	%compileCmnd%
@@ -59,8 +60,8 @@ echo.
 	set wheelFile=
 	for /f %%a in ('dir /b dist\*.whl') do (set wheelFile=%%a)  && REM  Built-in sorting ensures the latest whl file is installed
 	if not defined wheelFile echo. && call :COLOR_PRINT "Error - Failed to define var: wheelFile with name of pkg wheel file at: %CD%\dist\*.whl" "RED" && echo Cannot install pkg: %pkgName% && echo. && echo Aborting.. && pause && exit /b 1
-	echo OK. Found. && echo.
-	echo Install pacakge from wheel file: %CD%\dist\!wheelFile!
+	echo Found. && echo.
+	echo Install package from wheel file: %CD%\dist\!wheelFile!
 	CHOICE /C YN /M "Are you sure"
 	if %errorlevel% equ 2 echo Aborting.. && pause && exit 1
 	
@@ -92,24 +93,25 @@ echo.
 	)
 	
 	:: Remove already existing/installed package (if any..)
+	echo Checking if package: %pkgName% is already installed..
 	set installedPkgDir=%CD%\%vritualEnvDirName%\Lib\site-packages\%pkgName%
-	pip freeze | findstr /i "%pkgName%" && echo Removing already installed pacakge: %pkgName% && pip uninstall %pkgName% -y
-	if exist "%installedPkgDir%" echo. && call :COLOR_PRINT "WARNING: Removing installed package dir: %installedPkgDir%" "Yellow" && rmdir /q /s "%installedPkgDir%"
-	if exist "%installedPkgDir%" rmdir /q /s "%installedPkgDir%"  && REM Sometimes need to execute rmdir twice [windows shit..]
+	pip freeze | findstr /i "%pkgName%" && call :COLOR_PRINT "Removing already installed package: %pkgName%" "Yellow" && echo Executing: pip uninstall %pkgName% -y && pip uninstall %pkgName% -y
+	if exist "%installedPkgDir%" echo. && call :COLOR_PRINT "WARNING: Also removing installed package dir: %installedPkgDir%" "Yellow" && rmdir /q /s "%installedPkgDir%"
+	if exist "%installedPkgDir%" rmdir /q /s "%installedPkgDir%"  && REM Sometimes need to execute rmdir twice [windows shit.. -_- ]
 	if exist "%installedPkgDir%" echo. && call :COLOR_PRINT "WARNING: Failed to remove installed package dir: %installedPkgDir%" "Yellow" && echo. && echo Attempting to install anyway..
 	
 	
 	echo.
-	echo Installing..
+	call :COLOR_PRINT "Installing pkg %pkgName%.." "Magenta"
 	set installCmnd=python -m pip install --upgrade --no-deps --force-reinstall %CD%\dist\!wheelFile!
 	echo. && echo Executing: %installCmnd% && echo.
 	%installCmnd%
 	if %errorlevel% neq 0 echo. && call :COLOR_PRINT "Error - Bad exit code from installing command"  "RED" && echo Failure during execution of: %installCmnd% && echo Failed to install pkg: '%pkgName%' from file: %CD%\dist\!wheelFile! && echo. && echo Aborting.. && pause && exit /b 1
+	call :COLOR_PRINT "Success - Finished installing pkg: %pkgName%" "Green"
 	echo Cleaning..
 	if exist "src\%pkgName%.egg-info\*" echo Removing dir: "%CD%\src\%pkgName%.egg-info" && rmdir /q /s "src\%pkgName%.egg-info"
 	if exist "src\%pkgName%.egg-info\*" rmdir /q /s "src\%pkgName%.egg-info"
 	echo.
-	
 
 
 echo.
