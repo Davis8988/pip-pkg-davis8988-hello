@@ -20,7 +20,6 @@ def get_root_logger(**kwargs):
     root_logger = logging.getLogger()
     log_level = global_vars._logging_console_level
     if not root_logger.hasHandlers():
-        logging.basicConfig(level=log_level)
         add_console_logging_handler_result_dict = _add_console_logging_handler(logger=root_logger)  # Add console logging to 'root_logger' obj
         if not add_console_logging_handler_result_dict['result']:
             prev_err_msg = add_console_logging_handler_result_dict['info']
