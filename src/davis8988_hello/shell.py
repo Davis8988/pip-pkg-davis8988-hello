@@ -1,6 +1,6 @@
 # Executes a command on windows CMD or unix Shell 
 
-import root_logging
+import davis8988_hello.root_logging as root_logging
 import subprocess
 import time
 from threading import Timer
