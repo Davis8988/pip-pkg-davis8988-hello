@@ -62,8 +62,8 @@ echo.
 	if not defined wheelFile echo. && call :COLOR_PRINT "Error - Failed to define var: wheelFile with name of pkg wheel file at: %CD%\dist\*.whl" "RED" && echo Cannot install pkg: %pkgName% && echo. && echo Aborting.. && pause && exit /b 1
 	echo Found. && echo.
 	echo Install package from wheel file: %CD%\dist\!wheelFile!
-	CHOICE /C YN /M "Are you sure"
-	if %errorlevel% equ 2 echo Aborting.. && pause && exit 1
+	REM CHOICE /C YN /M "Are you sure"
+	REM if %errorlevel% equ 2 echo Aborting.. && pause && exit 1
 	
 	
 	:: Create Virtual Environment
