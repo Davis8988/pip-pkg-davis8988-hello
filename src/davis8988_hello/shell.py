@@ -51,7 +51,7 @@ def execute(command_str, **kwargs):
 
 
     try:    
-        root_logger.warning(f"Executing: {command_str}")
+        root_logger.info(f"Executing: {command_str}")
         process_obj = subprocess.Popen(command_str, 
                                         shell=True, 
                                         stdout=command_redirect_stdout_to, 
