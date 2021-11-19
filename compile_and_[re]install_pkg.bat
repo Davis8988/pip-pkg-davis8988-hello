@@ -91,6 +91,15 @@ echo.
 		echo Success - Finished activating virtual environment
 	)
 	
+	:: Remove already existing/installed package (if any..)
+	set installedPkgDir=%CD%\%vritualEnvDirName%\Lib\site-packages\%pkgName%
+	pip freeze | findstr /i "%pkgName%" && echo Removing already installed pacakge: %pkgName% && pip uninstall %pkgName% -y
+	if exist "%installedPkgDir%" echo. && call :COLOR_PRINT "WARNING: Removing installed package dir: %installedPkgDir%" "Yellow" && rmdir /q /s "%installedPkgDir%"
+	if exist "%installedPkgDir%" rmdir /q /s "%installedPkgDir%"  && REM Sometimes need to execute rmdir twice [windows shit..]
+	if exist "%installedPkgDir%" echo. && call :COLOR_PRINT "WARNING: Failed to remove installed package dir: %installedPkgDir%" "Yellow" && echo. && echo Attempting to install anyway..
+	
+	
+	echo.
 	echo Installing..
 	set installCmnd=python -m pip install --upgrade --no-deps --force-reinstall %CD%\dist\!wheelFile!
 	echo. && echo Executing: %installCmnd% && echo.
