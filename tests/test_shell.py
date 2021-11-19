@@ -1,7 +1,7 @@
 # Tests 'shell' module
 
 import os
-os.environ['LOGLEVEL'] = 'info'
+os.environ['LOGLEVEL'] = 'DEBUG'
 import davis8988_hello.shell as myshell
 
 result = myshell.execute("asdadsas ping localhost -n 2", command_timeout_sec=5)
