@@ -18,7 +18,6 @@ def get_root_logger_or_fail(**kwargs):
 def get_root_logger(**kwargs):
     result_dict = {"result" : True, "info" : '', 'root_logger': None}
     root_logger = logging.getLogger()
-    log_level = global_vars._logging_console_level
     if not root_logger.hasHandlers():
         add_console_logging_handler_result_dict = _add_console_logging_handler(logger=root_logger)  # Add console logging to 'root_logger' obj
         if not add_console_logging_handler_result_dict['result']:
@@ -28,6 +27,7 @@ def get_root_logger(**kwargs):
             result_dict['info'] = err_msg
             result_dict['result'] = False
             return result_dict
+    log_level = global_vars._logging_console_level
     root_logger.setLevel(log_level)
     result_dict['root_logger'] = root_logger
     return result_dict
